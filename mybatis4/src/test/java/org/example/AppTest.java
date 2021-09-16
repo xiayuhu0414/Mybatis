@@ -10,7 +10,9 @@ import org.example.utils.MybatisUtils;
 import org.example.vo.QueryParam;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Unit test for simple App.
@@ -85,4 +87,44 @@ public class AppTest {
         sqlSession.close();
     }
 
+    @Test
+    public void testselectMultiByMap(){
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        StudentDao dao =sqlSession.getMapper(StudentDao.class);
+
+        Map<String,Object>data=new HashMap<>();
+        data.put("myname","张三");
+        data.put("age",28);
+
+        List<Student> students=dao.selectMultiByMap(data);
+        for(Student stu: students){
+            System.out.println("学生="+stu);
+        }
+        sqlSession.close();
+    }
+    @Test
+    public void testSelectUse$(){
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        StudentDao dao = sqlSession.getMapper(StudentDao.class);
+
+        List<Student> students = dao.selectUse$("'李四';select * from student");
+
+        for(Student stu: students){
+            System.out.println("学生="+stu);
+        }
+        sqlSession.close();
+    }
+
+    @Test
+    public void testSelectUse$Order(){
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        StudentDao dao = sqlSession.getMapper(StudentDao.class);
+
+        List<Student> students = dao.selectUse$Order("age");
+
+        for(Student stu: students){
+            System.out.println("学生="+stu);
+        }
+        sqlSession.close();
+    }
 }

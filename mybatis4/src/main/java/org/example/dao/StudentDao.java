@@ -5,6 +5,7 @@ import org.example.domian.Student;
 import org.example.vo.QueryParam;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StudentDao {
 
@@ -32,4 +33,14 @@ public interface StudentDao {
     * mybatis3.4之后，使用#{arg0}，#{arg1}
     * */
     List<Student> seelectMultiPositior(String name,Integer age);
+
+    /*
+    * 多个参数，使用Map存放多个值
+    * */
+    List<Student> selectMultiByMap(Map<String,Object> map);
+
+
+    List<Student> selectUse$(@Param("myname") String name);
+
+    List<Student> selectUse$Order(@Param("colName") String colName);
 }
