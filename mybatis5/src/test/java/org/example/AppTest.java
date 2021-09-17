@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import com.sun.xml.internal.ws.runtime.config.TubelineDefinition;
 import org.apache.ibatis.session.SqlSession;
 import org.example.dao.StudentDao;
+import org.example.domian.MyStudent;
 import org.example.domian.Student;
 import org.example.utils.MybatisUtils;
 import org.example.vo.QueryParam;
@@ -84,6 +85,55 @@ public class AppTest {
 
         List<Student> students = dao.selectAllSrtudent();
 
+        for(Student stu: students){
+            System.out.println("学生="+stu);
+        }
+        sqlSession.close();
+    }
+
+    @Test
+    public void testSelectMyStudent(){
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        StudentDao dao = sqlSession.getMapper(StudentDao.class);
+
+        List<MyStudent> students = dao.selectMySrtudent();
+
+        for(MyStudent stu: students){
+            System.out.println("学生="+stu);
+        }
+        sqlSession.close();
+    }
+    @Test
+    public void testselectDiffColProperty(){
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        StudentDao dao = sqlSession.getMapper(StudentDao.class);
+        List<MyStudent> students = dao.selectDiffColProperty();
+        for(MyStudent stu: students){
+            System.out.println("学生="+stu);
+        }
+        sqlSession.close();
+    }
+
+    @Test
+    public void testLikeOne(){
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        StudentDao dao = sqlSession.getMapper(StudentDao.class);
+        //准备好Like的内容
+        String name ="%李%";
+        List<Student> students = dao.selectLikeOne(name);
+        for(Student stu: students){
+            System.out.println("学生="+stu);
+        }
+        sqlSession.close();
+    }
+
+    @Test
+    public void testLikeTwo(){
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        StudentDao dao = sqlSession.getMapper(StudentDao.class);
+        //准备好Like的内容
+        String name ="李";
+        List<Student> students = dao.selectLikeTwo(name);
         for(Student stu: students){
             System.out.println("学生="+stu);
         }

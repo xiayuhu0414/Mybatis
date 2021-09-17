@@ -51,5 +51,34 @@
     <select id="selectAllSrtudent" resultMap="studentMap">
         select id,name,email,age from student
     </select>
+
+    <!--列名和属性名不一样-->
+
+    <resultMap id="mystudentMap" type="org.example.domian.MyStudent">
+        <id column="id" property="stuid"/>
+        <result column="name" property="stuname"/>
+        <result column="email" property="stuemail"/>
+        <result column="age" property="stuage"/>
+    </resultMap>
+    <select id="selectMySrtudent" resultMap="mystudentMap">
+        select id,name,email,age from student
+    </select>
+
+    <!--列名和属性名不一样：第二种方式
+      resultType 的默认原则是 同名的列值赋给同名的属性，使用列别名
+    -->
+    <select id="selectDiffColProperty" resultType="org.example.domian.MyStudent">
+        select id as stuid,name as stuname,email as stuemail ,age as stuage from student
+    </select>
+
+    <!--第一种like，java代码指定like的内容-->
+    <select id="selectLikeOne" resultType="org.example.domian.Student">
+        select id,name,email,age from student where name like #{name}
+    </select>
+
+    <!--第二种方式：在mapper文件中拼接like的内容-->
+    <select id="selectLikeTwo" resultType="org.example.domian.Student">
+         select id,name,email,age from student where name like "%" #{name} "%"
+    </select>
 </mapper>
 
