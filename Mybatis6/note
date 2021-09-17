@@ -1,0 +1,43 @@
+动态sql: sql的内容是变化的，可以根据条件获取到不同的sql语句。
+           主要是where部分发生变化。
+
+ 动态sql的实现，使用的是mybatis提供的标签， <if> ,<where>,<foreach>
+
+ 1)<if>是判断条件的，
+   语法<if test="判断java对象的属性值">
+            部分sql语句
+	    </if>
+
+ 2)<where> 用来包含 多个<if>的， 当多个if有一个成立的， <where>会自动增加一个where关键字，
+            并去掉 if中多余的 and ，or等。
+
+ 3）<foreach> 循环java中的数组，list集合的。 主要用在sql的in语句中。
+    学生id是 1001,1002,1003的三个学生
+
+	 select * from student where id in (1001,1002,1003)
+
+	 public List<Student> selectFor(List<Integer> idlist)
+
+	 List<Integer> list = new ...
+	 list.add(1001);
+	 list.add(1002);
+	 list.add(1003);
+
+	 dao.selectFor(list)
+
+
+	 <foreach collection="" item="" open="" close="" separator="">
+             #{xxx}
+    </foreach>
+
+    collection:表示接口中的方法参数的类型， 如果是数组使用array , 如果是list集合使用list
+	 item:自定义的，表示数组和集合成员的变量
+	 open:循环开始是的字符
+	 close:循环结束时的字符
+    separator:集合成员之间的分隔符
+
+
+  4）sql代码片段， 就是复用一些语法
+    步骤
+	 1.先定义 <sql id="自定义名称唯一">  sql语句， 表名，字段等 </sql>
+    2.再使用， <include refid="id的值" />
