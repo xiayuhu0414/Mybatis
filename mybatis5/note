@@ -1,0 +1,35 @@
+mybatis的输出结果
+    mybatis执行了sql语句，得到java对象。
+
+	 1）resultType结果类型， 指sql语句执行完毕后， 数据转为的java对象， java类型是任意的。
+       resultType结果类型的它值 1. 类型的全限定名称   2. 类型的别名， 例如 java.lang.Integer别名是int
+
+
+	    处理方式：
+		   1. mybatis执行sql语句， 然后mybatis调用类的无参数构造方法，创建对象。
+			2. mybatis把ResultSet指定列值付给同名的属性。
+
+
+			<select id="selectMultiPosition" resultType="com.bjpowernode.domain.Student">
+          select id,name, email,age from student
+        </select>
+
+		  对等的jdbc
+		  ResultSet rs = executeQuery(" select id,name, email,age from student" )
+		  while(rs.next()){
+               Student  student = new Student();
+					student.setId(rs.getInt("id"));
+					student.setName(rs.getString("name"))
+		  }
+
+   2) 定义自定义类型的别名
+	   1）在mybatis主配置文件中定义，使<typeAlias>定义别名
+		2）可以在resultType中使用自定义别名
+
+
+   3）resultMap:结果映射， 指定列名和java对象的属性对应关系。
+	    1）你自定义列值赋值给哪个属性
+		 2）当你的列名和属性名不一样时，一定使用resultMap
+
+
+		 resultMap和resultType不要一起用，二选一

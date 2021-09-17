@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.dao.StudentDao">
+
+    <select id="selectStudentById" resultType="org.example.domian.Student">
+    select id,name,email,age from student where id=#{studentId}
+</select>
+    <!--多个参数使用@Param命名-->
+    <select id="selectMulitParam" resultType="stu">
+    select id,name,email,age from student where name=#{myname} or age=#{myage}
+</select>
+
+    <select id="selectStudentReturnViewStudent" resultType="ViewStudent">
+        select id,name,email,age from student where id=#{sid}
+    </select>
+
+    <select id="countStudent" resultType="int">
+        select count(*) from student
+    </select>
+
+    <!--返回Map
+       1)列名是map的key，列值是map的value
+       2）只能返回一条记录
+    -->
+    <select id="selectMapById" resultType="Map">
+        select id,name from student where id=#{stuid}
+    </select>
+
+    <!--使用resultMap
+        1)先定义resultMap
+        2)在select标签使用resultMap来引用1的定义
+    -->
+    <!--定义resultMap
+        id:自定义名称，表示你定义的这个resultMap
+        type：java类型的全限定名称
+    -->
+    <resultMap id="studentMap" type="org.example.domian.Student">
+        <!--列名和java属性的关系-->
+        <!--注解列，使用id标签
+             column：列名
+             property：java类型的属性名
+        -->
+        <id column="id" property="id"/>
+        <!--非主键列，使用result-->
+        <result column="name" property="name"/>
+        <result column="email" property="email"/>
+        <result column="age" property="age"/>
+    </resultMap>
+    <select id="selectAllSrtudent" resultMap="studentMap">
+        select id,name,email,age from student
+    </select>
+</mapper>
+

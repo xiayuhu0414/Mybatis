@@ -1,0 +1,58 @@
+  1. 动态代理： 使用SqlSession.getMapper(dao接口.class) 获取这个dao接口的对象
+  2. 传入参数： 从java代码中把数据传入到mapper文件的sql语句中。
+     1）parameterType ： 写在mapper文件中的 一个属性。 表示dao接口中方法的参数的数据类型。
+	     例如StudentDao接口
+		  public Student  selectStudentById(Integer id)
+
+	  2) 一个简单类型的参数：
+     简单类型： mybatis把java的基本数据类型和String都叫简单类型。
+     在mapper文件获取简单类型的一个参数的值，使用 #{任意字符}
+
+	  接口：public Student  selectStudentById(Integer id)
+	  mapper:select id,name, email,age from student where id=#{studentId}
+
+    3) 多个参数，使用@Param命名参数
+	  接口 public List<Student> selectMulitParam(@Param("myname") String name, @Param("myage") Integer age)
+	  使用  @Param("参数名")  String name
+     mapper文件：
+	     <select>
+             select * from student where name=#{myname} or age=#{myage}
+		  </select>
+
+    4) 多个参数，使用java对象
+	   语法 #{属性名}
+
+   vo: value object , 放一些存储数据的类。比如说 提交请求参数， name ,age
+	     现在想把name ,age 传给一个service 类。
+
+   vo: view object , 从servlet把数据返回给浏览器使用的类，表示显示结果的类。
+
+   pojo: 普通的有set， get方法的java类。 普通的java对象
+
+		  Servlet --- StudentService( addStudent( MyParam  param)  )
+
+   entity（domain域）: 实体类， 和数据库中的表对应的类，
+
+
+    5) # 和  $
+
+      select id,name, email,age from student where id=#{studentId}
+	  # 的结果： select id,name, email,age from student where id=?
+
+
+	   select id,name, email,age from student where id=${studentId}
+	  $ 的结果：select id,name, email,age from student where id=1001
+
+	  String sql="select id,name, email,age from student where id=" + "1001";
+	  使用的Statement对象执行sql， 效率比PreparedStatement低。
+
+
+	  $:可以替换表名或者列名， 你能确定数据是安全的。可以使用$
+
+
+	  # 和 $区别
+	  1. #使用 ？在sql语句中做站位的， 使用PreparedStatement执行sql，效率高
+	  2. #能够避免sql注入，更安全。
+	  3. $不使用占位符，是字符串连接方式，使用Statement对象执行sql，效率低
+	  4. $有sql注入的风险，缺乏安全性。
+	  5. $:可以替换表名或者列名
