@@ -3,11 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.example.dao.StudentDao">
+
+    <!--定义SQL片段-->
+    <sql id="studentSql">
+        select id,name,age,email from student
+    </sql>
+
 <!--if
       <if:test="使用参数java对象的属性值作为判断条件，语法 属性=xxx值"
 -->
     <select id="selectStudentIf" resultType="org.example.domian.Student">
-        select id,name,age,email from student
+     /*sql片段使用*/
+      <include refid="studentSql"/>
         where id>0
         <if test="name !=null and name !=''">
           and  name=#{name}
@@ -31,6 +38,25 @@
                 or age>#{age}
             </if>
         </where>
+    </select>
+
+
+    <!--foreach 使用1，List<Integer>-->
+    <select id="selectForeachOne" resultType="org.example.domian.Student">
+
+        select * from student where id in
+        <foreach collection="list" item="myid" open="(" close=")" separator=",">
+            #{myid}
+        </foreach>
+    </select>
+
+    <!--foreach 使用2，对象-->
+    <select id="selectForeachTwo" resultType="org.example.domian.Student">
+
+        select * from student where id in
+        <foreach collection="list" item="stu" open="(" close=")" separator=",">
+            #{stu.id}
+        </foreach>
     </select>
 </mapper>
 
