@@ -41,3 +41,33 @@
     步骤
 	 1.先定义 <sql id="自定义名称唯一">  sql语句， 表名，字段等 </sql>
     2.再使用， <include refid="id的值" />
+
+
+
+
+     1. 数据库的属性配置文件： 把数据库连接信息放到一个单独的文件中。 和mybatis主配置文件分开。
+         目的是便于修改，保存，处理多个数据库的信息。
+
+    	  1）在resources目录中定义一个属性配置文件， xxxx.properties ,例如 jdbc.properties
+            在属性配置文件中， 定义数据，格式是 key=value
+    		  key： 一般使用 . 做多级目录的。
+    		  例如 jdbc.mysql.driver    , jdbc.driver, mydriver
+    		  jdbc.driver=com.mysql.jdbc.Driver
+    		  jdbc.url=jdbc:mysql//.....
+    		  jdbc.username=root
+    		  jdbc.password=123456
+
+    	  2）在mybatis的主配置文件，使用<property> 指定文件的位置
+    	     在需要使用值的地方， ${key}
+
+     2.mapper文件，使用package指定路径
+         <mappers>
+
+            <!--第二种方式： 使用包名
+                name: xml文件（mapper文件）所在的包名, 这个包中所有xml文件一次都能加载给mybatis
+                使用package的要求：
+                 1. mapper文件名称需要和接口名称一样， 区分大小写的一样
+                 2. mapper文件和dao接口需要在同一目录
+            -->
+            <package name="com.bjpowernode.dao"/>
+        </mappers>

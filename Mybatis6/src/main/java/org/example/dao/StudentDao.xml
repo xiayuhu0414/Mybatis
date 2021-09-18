@@ -58,5 +58,10 @@
             #{stu.id}
         </foreach>
     </select>
+
+    <!--查询所有-->
+    <select id="selectAll" resultType="org.example.domian.Student">
+        select * from student order by id
+    </select>
 </mapper>
 

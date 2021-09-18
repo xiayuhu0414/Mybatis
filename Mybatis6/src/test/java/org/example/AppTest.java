@@ -2,6 +2,7 @@ package org.example;
 
 import static org.junit.Assert.assertTrue;
 
+import com.github.pagehelper.PageHelper;
 import com.sun.xml.internal.ws.runtime.config.TubelineDefinition;
 import org.apache.ibatis.session.SqlSession;
 import org.example.dao.StudentDao;
@@ -103,6 +104,21 @@ public class AppTest {
         List<Student> students=dao.selectForeachTwo(stuList);
         for(Student stu :students){
             System.out.println("foreach---two===" + stu);
+        }
+    }
+
+    @Test
+    public void testSelectAllPage(){
+
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        StudentDao dao  =  sqlSession.getMapper(StudentDao.class);
+       //加入Pagehelper的方法，分页
+        //pagenum：第几页
+        //pageSize:一页有几行数据
+        PageHelper.startPage(1,2);
+        List<Student> students=dao.selectAll();
+        for(Student stu :students){
+            System.out.println("foreach---one===" + stu);
         }
     }
 }
