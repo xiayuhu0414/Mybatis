@@ -72,5 +72,8 @@
 
 ###### 使用步骤
 1. 加入依赖
-2. 在mybatis主配置文件中，加入plugin
+2. 在mybatis主配置文件中，加入plugin  ``` <plugins>
+            <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            </plugin> ```  
+  
 3.在你查询方法之前加入 PageHelper.starPage(第几页，每页几行数据)
